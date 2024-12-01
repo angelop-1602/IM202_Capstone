@@ -134,7 +134,7 @@ input[type="text"]:focus {
 
 .white-space {
     background-color: white;
-    height: 11rem;
+    height: 16rem;
     width: 100%;
     position: fixed;
     top: 0;
@@ -151,5 +151,30 @@ input[type="text"]:focus {
     .container {
         width: 70%;
     }
+}
+
+/* Style for the reviewed column */
+.results-table td:first-child {
+    text-align: center; /* Center align the reviewed status */
+    font-weight: bold; /* Make the text bold */
+    color: #4CAF50; /* Change the color to green for completed */
+}
+
+/* Prevent content from breaking */
+.results-table td {
+    white-space: nowrap; /* Prevent line breaks */
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+}
+
+/* Optional: Style for the entire table */
+.results-table {
+    width: 100%; /* Make the table full width */
+    border-collapse: collapse; /* Collapse borders */
+}
+
+.results-table th, .results-table td {
+    padding: 1rem; /* Add padding */
+    border: 1px solid #ddd; /* Add border */
 }
 
