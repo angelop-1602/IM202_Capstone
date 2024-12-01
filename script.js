@@ -1,4 +1,4 @@
-
+// Reviewer codes mapping
 const reviewerCodes = [
     ["Dr. Allan Paulo L. Blaquera", "DRAPL-001"],
     ["Dr. Nova R. Domingo", "DRNRD-002"],
@@ -20,8 +20,10 @@ const reviewerCodes = [
     ["Master Code", "SHOWALL_@first_release"]
 ];
 
+// Convert reviewerCodes to a Map for easier lookup
 const reviewerMap = new Map(reviewerCodes.map(code => [code[1], code[0]]));
 
+// Fetch the CSV data
 fetch('first-release.csv')
     .then(response => response.text())
     .then(data => {
@@ -37,22 +39,26 @@ fetch('first-release.csv')
             };
         });
 
+        // Function to save the reviewed state in local storage
         function saveReviewedState(entryId, isChecked) {
             const reviewedStates = JSON.parse(localStorage.getItem('reviewedStates')) || {};
             reviewedStates[entryId] = isChecked;
             localStorage.setItem('reviewedStates', JSON.stringify(reviewedStates));
         }
 
+        // Function to load the reviewed state from local storage
         function loadReviewedState(entryId) {
             const reviewedStates = JSON.parse(localStorage.getItem('reviewedStates')) || {};
             return reviewedStates[entryId] || false; // Default to false if not found
         }
 
+        // Add event listener to the input field
         document.getElementById('reviewer-code').addEventListener('input', function() {
             const inputCode = this.value.trim();
             const resultsDiv = document.getElementById('results');
             resultsDiv.innerHTML = ''; // Clear previous results
 
+            // If the input is empty, do not show the table
             if (inputCode === '') {
                 return; // Exit the function if the input is empty
             }
@@ -110,6 +116,7 @@ fetch('first-release.csv')
                             <td>${entry.reviewer}</td>
                             <td>${entry.document}</td>
                             <td><a href="${entry.folderLink}" target="_blank">View Document</a></td>
+
                         `;
 
                         // Set the checkbox state based on local storage
