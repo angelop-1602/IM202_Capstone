@@ -147,3 +147,6 @@ fetch('first-release.csv')
     })
     .catch(error => console.error('Error fetching the CSV:', error));
 
+    function openForm(url) {
+        window.open(url, '_blank'); // Opens the URL in a new tab
+    }
