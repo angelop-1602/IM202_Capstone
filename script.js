@@ -121,3 +121,7 @@ function displayResults(data) {
 
 // Automatically load data on page load based on default selections
 window.onload = loadCSV;
+
+function openForm(url) {
+    window.open(url, '_blank'); // Opens the form in a new tab
+}
