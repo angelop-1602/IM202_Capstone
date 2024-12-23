@@ -178,3 +178,25 @@ input[type="text"]:focus {
     border: 1px solid #ddd; /* Add border */
 }
 
+.dropdown-container {
+    margin-top: 0.5rem;
+    display: flex; /* Use flexbox for side-by-side layout */
+    justify-content: center; /* Center the dropdowns */
+    gap: 1rem; /* Space between dropdowns */
+}
+
+.dropdown {
+    padding: 0.5rem; /* Adjust padding for smaller size */
+    font-size: 0.8rem; /* Slightly smaller font size */
+    width: 150px; /* Set a fixed width for smaller dropdowns */
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.dropdown:focus {
+    border-color: #016634; /* Change border color on focus */
+}
+

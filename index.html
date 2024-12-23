@@ -25,6 +25,16 @@
                     Form</button>
             </div>
             <input type="text" id="reviewer-code" placeholder="Enter Reviewer Code" class="input-field">
+            <div class="dropdown-container">
+                <select id="release-select" class="dropdown">
+                    <option value="first-release">First Release</option>
+                    <option value="second-release">Second Release</option>
+                </select>
+                <select id="level-select" class="dropdown" style="display: none;">
+                    <option value="undergraduate">Undergraduate</option>
+                    <option value="graduate">Graduate</option>
+                </select>
+            </div>
         </div>
         <div id="results">
             <!-- Filtered results will be displayed here -->

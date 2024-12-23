@@ -17,136 +17,107 @@ const reviewerCodes = [
     ["Dr. Corazon Dela Cruz", "DRCDC-015"],
     ["Dr. Ester Yu", "DREY-016"],
     ["Mr. Angelo Peralta", "MRAP-017"],
-    ["Master Code", "SHOWALL_@first_release"]
+    ["Dr. Janette Fermin", "DRJF-018"],
+    ["Mr. Rogelio Fermin", "MRRF-019"],
+    ["Mrs. Vivian Sorita", "MRSVS-020"],
+    ["Dr. Benjamin Jularbal", "DRBJ-021"],
+    ["Mrs. Kristine Joy O. Cortes", "MRSKC-022"],
+    ["Mrs. Jean Sumait", "MRSJS-023"],
+    ["Dr. Emman Earl Cacayurin", "DREEC-024"],
+    ["Master Code", "SHOWALL"]
 ];
 
 // Convert reviewerCodes to a Map for easier lookup
 const reviewerMap = new Map(reviewerCodes.map(code => [code[1], code[0]]));
 
-// Fetch the CSV data
-fetch('first-release.csv')
-    .then(response => response.text())
-    .then(data => {
-        const rows = data.split('\n').slice(1); // Skip header
-        const filteredData = rows.map(row => {
-            const columns = row.split(',');
-            return {
-                mainFolder: columns[0],
-                reviewer: columns[1],
-                document: columns[2],
-                folderLink: columns[3],
-                progress: columns[4] // Keep the progress column for reference
-            };
-        });
+function loadCSV() {
+    const release = document.getElementById('release-select').value; // Get selected release
+    const level = document.getElementById('level-select').value; // Get selected level
+    let csvFile;
 
-        // Function to save the reviewed state in local storage
-        function saveReviewedState(entryId, isChecked) {
-            const reviewedStates = JSON.parse(localStorage.getItem('reviewedStates')) || {};
-            reviewedStates[entryId] = isChecked;
-            localStorage.setItem('reviewedStates', JSON.stringify(reviewedStates));
-        }
-
-        // Function to load the reviewed state from local storage
-        function loadReviewedState(entryId) {
-            const reviewedStates = JSON.parse(localStorage.getItem('reviewedStates')) || {};
-            return reviewedStates[entryId] || false; // Default to false if not found
-        }
-
-        // Add event listener to the input field
-        document.getElementById('reviewer-code').addEventListener('input', function() {
-            const inputCode = this.value.trim();
-            const resultsDiv = document.getElementById('results');
-            resultsDiv.innerHTML = ''; // Clear previous results
-
-            // If the input is empty, do not show the table
-            if (inputCode === '') {
-                return; // Exit the function if the input is empty
-            }
-
-            // Create a new table for displaying results
-            const resultsTable = document.createElement('table');
-            resultsTable.className = 'results-table';
-            resultsTable.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>Reviewed</th>
-                        <th>Proponent Code</th>
-                        <th>Reviewer Name</th>
-                        <th>Document</th>
-                        <th>Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            `;
-
-            let filteredResults;
-
-            // Check if the input code is "SHOWALL_@first_release"
-            if (inputCode === "SHOWALL_@first_release") {
-                filteredResults = filteredData; // Show all data
-            } else {
-                // Filter based on the input code
-                const reviewerName = reviewerMap.get(inputCode);
-                filteredResults = reviewerName ? filteredData.filter(entry => entry.reviewer === reviewerName) : [];
-            }
-
-            // Display results in the table
-            const tableBody = resultsTable.querySelector('tbody');
-            if (filteredResults.length > 0) {
-                filteredResults.forEach((entry, index) => {
-                    const row = document.createElement('tr');
-                    const entryId = `entry-${index}`; // Unique ID for each entry
-                    const isChecked = loadReviewedState(entryId); // Load the reviewed state
-
-                    if (inputCode === "SHOWALL_@first_release") {
-                        // For SHOWALL_@first_release, show the progress
-                        row.innerHTML = `
-                            <td>${isChecked ? 'Completed' : 'In Progress'}</td>
-                            <td>${entry.mainFolder}</td>
-                            <td>${entry.reviewer}</td>
-                            <td>${entry.document}</td>
-                            <td><a href="${entry.folderLink}" target="_blank">View Document</a></td>
-                        `;
-                    } else {
-                        // For individual reviewer codes, keep the checkbox
-                        row.innerHTML = `
-                            <td><input type="checkbox" class="review-checkbox" id="${entryId}" ${isChecked ? 'checked' : ''}></td>
-                            <td>${entry.mainFolder}</td>
-                            <td>${entry.reviewer}</td>
-                            <td>${entry.document}</td>
-                            <td><a href="${entry.folderLink}" target="_blank">View Document</a></td>
-
-                        `;
-
-                        // Set the checkbox state based on local storage
-                        const checkbox = row.querySelector('.review-checkbox');
-                        checkbox.addEventListener('change', function() {
-                            const checked = this.checked;
-                            saveReviewedState(entryId, checked); // Save the state
-                            row.style.backgroundColor = checked ? '#d4edda' : ''; // Change background color
-                        });
-
-                        // Set the initial background color based on the checkbox state
-                        if (isChecked) {
-                            row.style.backgroundColor = '#d4edda'; // Light green for reviewed
-                        }
-                    }
-
-                    tableBody.appendChild(row);
-                });
-            } else {
-                const noDataRow = document.createElement('tr');
-                noDataRow.innerHTML = '<td colspan="6">No results found for the given reviewer code.</td>'; // Adjust colspan
-                tableBody.appendChild(noDataRow);
-            }
-
-            // Append the results table to the results div
-            resultsDiv.appendChild(resultsTable);
-        });
-    })
-    .catch(error => console.error('Error fetching the CSV:', error));
-
-    function openForm(url) {
-        window.open(url, '_blank'); // Opens the URL in a new tab
+    // Determine the CSV file based on the selected release
+    if (release === 'first-release') {
+        csvFile = 'first-release.csv';
+    } else if (release === 'second-release') {
+        csvFile = level === 'graduate' ? 'second-release-graduate.csv' : 'second-release-undergraduate.csv';
     }
+
+    // Show level dropdown only for the second release
+    document.getElementById('level-select').style.display = release === 'second-release' ? 'block' : 'none';
+
+    fetch(csvFile)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text();
+        })
+        .then(data => {
+            const rows = data.split('\n').slice(1); // Skip header
+            const filteredData = rows.map(row => {
+                const columns = row.split(',');
+                return {
+                    mainFolder: columns[0],
+                    reviewer: columns[1],
+                    document: columns[2],
+                    folderLink: columns[3],
+                    progress: columns[4] // Keep the progress column for reference
+                };
+            });
+
+            // Filter the data based on the reviewer code input
+            const inputCode = document.getElementById('reviewer-code').value.trim();
+            let sortedData;
+
+            // Check if the input code is "SHOWALL"
+            if (inputCode === "SHOWALL") {
+                sortedData = filteredData; // Show all data
+            } else {
+                const reviewerName = reviewerMap.get(inputCode);
+                sortedData = reviewerName ? filteredData.filter(entry => entry.reviewer === reviewerName) : [];
+            }
+
+            // Display the filtered data as needed
+            displayResults(sortedData);
+        })
+        .catch(error => console.error('Error loading CSV:', error));
+}
+
+// Add event listeners to dropdowns
+document.getElementById('release-select').addEventListener('change', loadCSV);
+document.getElementById('level-select').addEventListener('change', loadCSV);
+
+// Add event listener to the input field
+document.getElementById('reviewer-code').addEventListener('input', loadCSV);
+
+// Function to display results
+function displayResults(data) {
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ''; // Clear previous results
+
+    if (data.length === 0) {
+        resultsDiv.innerHTML = '<p class="no-data">No data available.</p>';
+        return;
+    }
+
+    const table = document.createElement('table');
+    table.className = 'results-table';
+    const headerRow = table.insertRow();
+    headerRow.innerHTML = '<th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th><th>Progress</th>';
+
+    data.forEach(item => {
+        const row = table.insertRow();
+        row.innerHTML = `
+            <td>${item.mainFolder}</td>
+            <td>${item.reviewer}</td>
+            <td>${item.document}</td>
+            <td><a href="${item.folderLink}" target="_blank">View Document</a></td>
+            <td>${item.progress}</td>
+        `;
+    });
+
+    resultsDiv.appendChild(table);
+}
+
+// Automatically load data on page load based on default selections
+window.onload = loadCSV;
