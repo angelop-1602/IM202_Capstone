@@ -40,10 +40,12 @@ function loadCSV() {
         csvFile = 'first-release.csv';
     } else if (release === 'second-release') {
         csvFile = level === 'graduate' ? 'second-release-graduate.csv' : 'second-release-undergraduate.csv';
+    } else if (release === 'third-release') {
+        csvFile = level === 'graduate' ? 'third-release-graduate.csv' : 'third-release-undergraduate.csv';
     }
 
-    // Show level dropdown only for the second release
-    document.getElementById('level-select').style.display = release === 'second-release' ? 'block' : 'none';
+    // Show level dropdown only for the second and third releases
+    document.getElementById('level-select').style.display = (release === 'second-release' || release === 'third-release') ? 'block' : 'none';
 
     fetch(csvFile)
         .then(response => {
