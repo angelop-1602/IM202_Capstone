@@ -41,48 +41,60 @@ function loadCSV() {
     } else if (release === 'second-release') {
         csvFile = level === 'graduate' ? 'second-release-graduate.csv' : 'second-release-undergraduate.csv';
     } else if (release === 'third-release') {
-        csvFile = level === 'graduate' ? 'third-release-graduate.csv' : 'third-release-undergraduate.csv';
+        // Only load the graduate CSV for the third release
+        if (level === 'graduate') {
+            csvFile = 'third-release-graduate.csv';
+        } else {
+            // If undergraduate is selected, do not set csvFile
+            csvFile = null; // Prevent fetching
+        }
     }
 
     // Show level dropdown only for the second and third releases
     document.getElementById('level-select').style.display = (release === 'second-release' || release === 'third-release') ? 'block' : 'none';
 
-    fetch(csvFile)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok ' + response.statusText);
-            }
-            return response.text();
-        })
-        .then(data => {
-            const rows = data.split('\n').slice(1); // Skip header
-            const filteredData = rows.map(row => {
-                const columns = row.split(',');
-                return {
-                    mainFolder: columns[0],
-                    reviewer: columns[1],
-                    document: columns[2],
-                    folderLink: columns[3],
-                    progress: columns[4] // Keep the progress column for reference
-                };
-            });
+    // Fetch the CSV file only if it is set
+    if (csvFile) {
+        fetch(csvFile)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text();
+            })
+            .then(data => {
+                const rows = data.split('\n').slice(1); // Skip header
+                const filteredData = rows.map(row => {
+                    const columns = row.split(',');
+                    return {
+                        mainFolder: columns[0],
+                        reviewer: columns[1],
+                        document: columns[2],
+                        folderLink: columns[3],
+                        progress: columns[4] // Keep the progress column for reference
+                    };
+                });
 
-            // Filter the data based on the reviewer code input
-            const inputCode = document.getElementById('reviewer-code').value.trim();
-            let sortedData;
+                // Filter the data based on the reviewer code input
+                const inputCode = document.getElementById('reviewer-code').value.trim();
+                let sortedData;
 
-            // Check if the input code is "SHOWALL"
-            if (inputCode === "SHOWALL") {
-                sortedData = filteredData; // Show all data
-            } else {
-                const reviewerName = reviewerMap.get(inputCode);
-                sortedData = reviewerName ? filteredData.filter(entry => entry.reviewer === reviewerName) : [];
-            }
+                // Check if the input code is "SHOWALL"
+                if (inputCode === "SHOWALL") {
+                    sortedData = filteredData; // Show all data
+                } else {
+                    const reviewerName = reviewerMap.get(inputCode);
+                    sortedData = reviewerName ? filteredData.filter(entry => entry.reviewer === reviewerName) : [];
+                }
 
-            // Display the filtered data as needed
-            displayResults(sortedData);
-        })
-        .catch(error => console.error('Error loading CSV:', error));
+                // Display the filtered data as needed
+                displayResults(sortedData);
+            })
+            .catch(error => console.error('Error loading CSV:', error));
+    } else {
+        // Handle case where no CSV file is set (e.g., show no data)
+        displayResults([]);
+    }
 }
 
 // Add event listeners to dropdowns
