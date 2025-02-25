@@ -117,20 +117,34 @@ function displayResults(data) {
     const table = document.createElement('table');
     table.className = 'results-table';
     const headerRow = table.insertRow();
-    headerRow.innerHTML = '<th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th><th>Progress</th>';
+    headerRow.innerHTML = '<th>Reviewed</th><th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th>';
 
     data.forEach(item => {
         const row = table.insertRow();
         row.innerHTML = `
+            <td><input type="checkbox" class="review-checkbox" data-document="${item.document}"></td>
             <td>${item.mainFolder}</td>
             <td>${item.reviewer}</td>
             <td>${item.document}</td>
             <td><a href="${item.folderLink}" target="_blank">View Document</a></td>
-            <td>${item.progress}</td>
         `;
     });
 
     resultsDiv.appendChild(table);
+
+    document.getElementById('results').addEventListener('change', function(event) {
+        if (event.target.classList.contains('review-checkbox')) {
+            const documentName = event.target.getAttribute('data-document');
+            const reviewed = event.target.checked;
+
+            // Store the reviewed status in local storage
+            if (reviewed) {
+                localStorage.setItem(documentName, 'reviewed');
+            } else {
+                localStorage.removeItem(documentName);
+            }
+        }
+    });
 }
 
 // Automatically load data on page load based on default selections
