@@ -171,6 +171,7 @@ input[type="text"]:focus {
 .results-table {
     width: 100%; /* Make the table full width */
     border-collapse: collapse; /* Collapse borders */
+    
 }
 
 .results-table th, .results-table td {
@@ -198,5 +199,57 @@ input[type="text"]:focus {
 
 .dropdown:focus {
     border-color: #016634; /* Change border color on focus */
+}
+
+/* Hide the default checkbox */
+.review-checkbox {
+    display: none; /* Hide the default checkbox */
+}
+
+/* Create a custom checkbox */
+.review-checkbox + label {
+    position: relative;
+    margin: auto;
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+    display: flex; /* Use flexbox for centering */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    height: 20px; /* Set a height for the label */
+    width: 20px; /* Set a width for the label */
+}
+
+/* Create the custom checkbox appearance */
+.review-checkbox + label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px; /* Width of the custom checkbox */
+    height: 20px; /* Height of the custom checkbox */
+    border: 2px solid #016634; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    background-color: white; /* Background color */
+    transition: background-color 0.3s, border-color 0.3s; /* Transition effects */
+}
+
+/* Style when the checkbox is checked */
+.review-checkbox:checked + label:before {
+    background-color: #016634; /* Background color when checked */
+    border-color: #016634; /* Border color when checked */
+}
+
+/* Style the checkmark */
+.review-checkbox:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 5px; /* Position of the checkmark */
+    top: 50%; /* Center vertically */
+    transform: translateY(-70%) rotate(45deg); /* Center and rotate to form a checkmark */
+    width: 5px; /* Width of the checkmark */
+    height: 10px; /* Height of the checkmark */
+    border: solid white; /* Checkmark color */
+    border-width: 0 2px 2px 0; /* Checkmark shape */
 }
 

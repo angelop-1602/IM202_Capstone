@@ -117,33 +117,43 @@ function displayResults(data) {
     const table = document.createElement('table');
     table.className = 'results-table';
     const headerRow = table.insertRow();
-    headerRow.innerHTML = '<th>Reviewed</th><th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th>';
+    headerRow.innerHTML = '<th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th><th>Progress</th>';
 
-    data.forEach(item => {
+    data.forEach((item, index) => {
         const row = table.insertRow();
+        
+        // Create a unique key for localStorage using BOTH main folder and document
+        // This ensures documents with the same name but in different folders are treated uniquely
+        const storageKey = `${item.mainFolder}_${item.document}`;
+        const safeStorageKey = storageKey.replace(/[^a-zA-Z0-9]/g, '_');
+        
+        // Generate a completely unique ID for each checkbox
+        const uniqueId = `checkbox_${index}_${safeStorageKey}`;
+        
+        // Check if this specific document+folder combination has been reviewed
+        const isChecked = localStorage.getItem(safeStorageKey) === 'true';
+        
         row.innerHTML = `
-            <td><input type="checkbox" class="review-checkbox" data-document="${item.document}"></td>
-            <td>${item.mainFolder}</td>
-            <td>${item.reviewer}</td>
-            <td>${item.document}</td>
-            <td><a href="${item.folderLink}" target="_blank">View Document</a></td>
-        `;
+        <td>${item.mainFolder}</td>
+        <td>${item.reviewer}</td>
+        <td>${item.document}</td>
+        <td><a href="${item.folderLink}" target="_blank">View Document</a></td>
+        <td>
+            <input type="checkbox" id="${uniqueId}" class="review-checkbox" data-key="${safeStorageKey}" ${isChecked ? 'checked' : ''}>
+            <label for="${uniqueId}"></label> <!-- Add label for custom checkbox -->
+        </td>
+    `;
     });
 
     resultsDiv.appendChild(table);
 
-    document.getElementById('results').addEventListener('change', function(event) {
-        if (event.target.classList.contains('review-checkbox')) {
-            const documentName = event.target.getAttribute('data-document');
-            const reviewed = event.target.checked;
-
-            // Store the reviewed status in local storage
-            if (reviewed) {
-                localStorage.setItem(documentName, 'reviewed');
-            } else {
-                localStorage.removeItem(documentName);
-            }
-        }
+    // Add event listeners to checkboxes after they're created
+    document.querySelectorAll('.review-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            // Use the data-key attribute to store/retrieve from localStorage
+            const storageKey = this.getAttribute('data-key');
+            localStorage.setItem(storageKey, this.checked);
+        });
     });
 }
 
