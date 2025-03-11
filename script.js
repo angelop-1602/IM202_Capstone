@@ -45,8 +45,8 @@ function loadCSV() {
         if (level === 'graduate') {
             csvFile = 'third-release-graduate.csv';
         } else {
-            // If undergraduate is selected, do not set csvFile
-            csvFile = null; // Prevent fetching
+            // If undergraduate is selected, load the new CSV
+            csvFile = 'third-release-undergraduate.csv';
         }
     }
 
