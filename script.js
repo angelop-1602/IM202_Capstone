@@ -48,10 +48,19 @@ function loadCSV() {
             // If undergraduate is selected, load the new CSV
             csvFile = 'third-release-undergraduate.csv';
         }
+    } else if (release === 'fourth-release') {
+        // Add support for fourth release
+        if (level === 'graduate') {
+            csvFile = 'fourth-release-graduate.csv';
+        } else {
+            // If undergraduate is selected, load the undergraduate CSV
+            csvFile = 'fourth-release-undergraduate.csv';
+        }
     }
 
-    // Show level dropdown only for the second and third releases
-    document.getElementById('level-select').style.display = (release === 'second-release' || release === 'third-release') ? 'block' : 'none';
+    // Show level dropdown only for the second, third, and fourth releases
+    document.getElementById('level-select').style.display = 
+        (release === 'second-release' || release === 'third-release' || release === 'fourth-release') ? 'block' : 'none';
 
     // Fetch the CSV file only if it is set
     if (csvFile) {
