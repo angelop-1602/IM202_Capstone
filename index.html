@@ -3,18 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="e-REC System - Electronic Review and Ethics Committee System">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>e-REC System</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Preload critical resources -->
+    <link rel="preload" href="script.js" as="script">
+    <link rel="preload" href="styles.css" as="style">
 </head>
 
 <body>
     <div class="white-space"></div>
-    <div class="container">
+    <main class="container">
         
-        <div class="header">
+        <header class="header">
             <h1>e-REC System</h1>
-            <div class="form-buttons">
+            <nav class="form-buttons">
                 <button class="form-button" onclick="openForm('https://forms.office.com/r/0nQCTjvBsv')">ICA
                     Form</button>
                 <button class="form-button" onclick="openForm('https://forms.office.com/r/4WuaHiiJar')">PRA
@@ -23,27 +28,37 @@
                     Form</button>
                 <button class="form-button" onclick="openForm('https://forms.office.com/r/vT231a87fj')">PRA-EX
                     Form</button>
-            </div>
-            <input type="text" id="reviewer-code" placeholder="Enter Reviewer Code" class="input-field">
+            </nav>
+            <label for="reviewer-code" class="sr-only">Reviewer Code</label>
+            <input type="text" id="reviewer-code" placeholder="Enter Reviewer Code" class="input-field" autocomplete="off">
             <div class="dropdown-container">
+                <label for="release-select" class="sr-only">Release</label>
                 <select id="release-select" class="dropdown">
                     <option value="first-release">First Release</option>
                     <option value="second-release">Second Release</option>
                     <option value="third-release">Third Release</option>
                     <option value="fourth-release">Fourth Release</option>
                 </select>
+                <label for="level-select" class="sr-only">Level</label>
                 <select id="level-select" class="dropdown" style="display: none;">
                     <option value="undergraduate">Undergraduate</option>
                     <option value="graduate">Graduate</option>
                 </select>
+                <label for="week-select" class="sr-only">Week</label>
+                <select id="week-select" class="dropdown" style="display: none;">
+                    <option value="1st-week">1st Week</option>
+                    <option value="2nd-week" disabled>2nd Week (Coming Soon)</option>
+                    <option value="3rd-week" disabled>3rd Week (Coming Soon)</option>
+                    <option value="4th-week" disabled>4th Week (Coming Soon)</option>
+                </select>
             </div>
-        </div>
-        <div id="results">
+        </header>
+        <section id="results" aria-live="polite">
             <!-- Filtered results will be displayed here -->
-        </div>
-    </div>
-    <img src="/img/ethics_com.jpg" alt="Ethics Committee" class="ethics-image">
-    <script src="script.js"></script>
+            <p class="loading">Loading data...</p>
+        </section>
+    </main>
+    <script src="script.js" defer></script>
 </body>
 
 </html>
