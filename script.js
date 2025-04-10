@@ -222,9 +222,24 @@ function displayResults(data) {
     const table = document.createElement('table');
     table.className = 'results-table';
     
-    // Create header row
-    const headerRow = table.insertRow();
-    headerRow.innerHTML = '<th>Main Folder</th><th>Reviewer</th><th>Document</th><th>Folder Link</th><th>Progress</th>';
+    // Create proper thead element
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    
+    // Add headers
+    const headers = ['Main Folder', 'Reviewer', 'Document', 'Folder Link', 'Progress'];
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+    
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    
+    // Create tbody element
+    const tbody = document.createElement('tbody');
+    table.appendChild(tbody);
 
     // Batch process for DOM operations
     const batchSize = 20;
@@ -234,7 +249,7 @@ function displayResults(data) {
             const batch = data.slice(i, i + batchSize);
             batch.forEach((item, index) => {
                 const actualIndex = i + index;
-                const row = table.insertRow();
+                const row = document.createElement('tr');
                 
                 // Create a unique key for localStorage using BOTH main folder and document
                 const storageKey = `${item.mainFolder}_${item.document}`;
@@ -246,16 +261,23 @@ function displayResults(data) {
                 // Check if this specific document+folder combination has been reviewed
                 const isChecked = localStorage.getItem(safeStorageKey) === 'true';
                 
-                row.innerHTML = `
-                <td>${item.mainFolder}</td>
-                <td>${item.reviewer}</td>
-                <td>${item.document}</td>
-                <td><a href="${item.folderLink}" target="_blank">View Document</a></td>
-                <td>
-                    <input type="checkbox" id="${uniqueId}" class="review-checkbox" data-key="${safeStorageKey}" ${isChecked ? 'checked' : ''}>
-                    <label for="${uniqueId}"></label>
-                </td>
-                `;
+                // Create cells with data-labels for mobile view
+                const cells = [
+                    { content: item.mainFolder, label: 'Main Folder' },
+                    { content: item.reviewer, label: 'Reviewer' },
+                    { content: item.document, label: 'Document' },
+                    { content: `<a href="${item.folderLink}" target="_blank">View Document</a>`, label: 'Folder Link' },
+                    { content: `<input type="checkbox" id="${uniqueId}" class="review-checkbox" data-key="${safeStorageKey}" ${isChecked ? 'checked' : ''}><label for="${uniqueId}"></label>`, label: 'Progress' }
+                ];
+                
+                cells.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.setAttribute('data-label', cell.label);
+                    td.innerHTML = cell.content;
+                    row.appendChild(td);
+                });
+                
+                tbody.appendChild(row);
             });
             
             // Add event listeners to the batch's checkboxes

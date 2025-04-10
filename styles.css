@@ -20,8 +20,7 @@ h1 {
 }
 
 .container {
-    width: 95%;
-    max-width: 800px;
+    width: 100%;
     position: relative;
     background-color: white;
     margin: 0 auto;
@@ -124,17 +123,8 @@ input[type="text"]:focus {
     background-color: white;
     z-index: 10;
     width: 100%;
-    max-width: 800px;
 }
 
-.white-space {
-    background-color: white;
-    height: 16rem;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    z-index: 10;
-}
 
 @media (max-width: 480px) {
     h1 {
@@ -179,7 +169,7 @@ input[type="text"]:focus {
 
 @media (min-width: 481px) and (max-width: 767px) {
     .container {
-        width: 90%;
+        width: 100%;
     }
     
     .form-button {
@@ -189,7 +179,10 @@ input[type="text"]:focus {
 
 @media (min-width: 768px) {
     .container {
-        width: 80%;
+        width: 100%;
+    }
+    .header{
+        top: 0;
     }
 }
 
@@ -200,52 +193,112 @@ input[type="text"]:focus {
 }
 
 @media (max-width: 767px) {
-    .results-table, .results-table thead, .results-table tbody, 
-    .results-table th, .results-table td, .results-table tr {
-        display: block;
+    .results-table {
+        width: 100%;
+        max-width: 100%;
+        border: none;
+        table-layout: fixed;
     }
     
-    .results-table thead tr {
+    .results-table thead {
+        display: none;
+        height: 0;
+        visibility: hidden;
         position: absolute;
-        top: -9999px;
-        left: -9999px;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        border: 0;
+    }
+    
+    .results-table tbody {
+        display: block;
+        width: 100%;
     }
     
     .results-table tr {
+        display: block;
         margin-bottom: 1rem;
         border: 1px solid #ddd;
         border-radius: 8px;
-        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        padding: 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     .results-table td {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        padding: 0.5rem;
         border: none;
         border-bottom: 1px solid #eee;
         position: relative;
-        padding-left: 50%;
         white-space: normal;
-        text-align: left;
+        word-break: break-word;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .results-table td:last-child {
+        border-bottom: none;
     }
     
     .results-table td:before {
-        position: absolute;
-        top: 6px;
-        left: 6px;
-        width: 45%;
-        padding-right: 10px;
-        white-space: nowrap;
-        text-align: left;
+        content: attr(data-label);
         font-weight: bold;
+        color: #016634;
+        margin-bottom: 0.25rem;
+        font-size: 0.9rem;
+        width: 100%;
     }
     
+    /* Add data-labels to match the table headers */
     .results-table td:nth-of-type(1):before { content: "Main Folder"; }
     .results-table td:nth-of-type(2):before { content: "Reviewer"; }
     .results-table td:nth-of-type(3):before { content: "Document"; }
     .results-table td:nth-of-type(4):before { content: "Folder Link"; }
     .results-table td:nth-of-type(5):before { content: "Progress"; }
     
+    /* Style for links in mobile view */
+    .results-table td a {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #016634;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin-top: 0.25rem;
+        text-align: center;
+        width: fit-content;
+    }
+    
+    /* Style for checkboxes in mobile view */
     .results-table td:last-child {
-        border-bottom: 0;
+        text-align: left;
+    }
+    
+    .review-checkbox + label {
+        margin-left: 0;
+        margin-top: 0.25rem;
+    }
+
+    /* Ensure container doesn't cause horizontal scroll */
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 0.5rem;
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+
+    /* Ensure the results section doesn't overflow */
+    #results {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 }
 
