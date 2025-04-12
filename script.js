@@ -70,7 +70,14 @@ function loadCSV() {
     } else if (release === 'april') {
         if (week === '1st-week') {
             csvFile = 'april_1stweek.csv';
+        } else if (week === '2nd-week') {
+            csvFile = 'april_2ndweek.csv';
+        } else if (week === '3rd-week') {
+            csvFile = 'april_3rdweek.csv';
+        } else if (week === '4th-week') {
+            csvFile = 'april_4thweek.csv';
         }
+
     }
 
     // Update UI dropdowns display
@@ -187,7 +194,7 @@ if (!document.getElementById('week-select')) {
     // Week options
     const weekOptions = [
         { value: '1st-week', text: '1st Week' },
-        { value: '2nd-week', text: '2nd Week (Coming Soon)', disabled: true },
+        { value: '2nd-week', text: '2nd Week' },
         { value: '3rd-week', text: '3rd Week (Coming Soon)', disabled: true },
         { value: '4th-week', text: '4th Week (Coming Soon)', disabled: true }
     ];
