@@ -24,6 +24,8 @@ const reviewerCodes = [
     ["Mrs. Kristine Joy O. Cortes", "MRSKC-022"],
     ["Mrs. Jean Sumait", "MRSJS-023"],
     ["Dr. Emman Earl Cacayurin", "DREEC-024"],
+    ["Dr. Marites Tenedor", "DRMT-025"],
+    ["Dr. MJ Manuel", "DRMJM-026"],
     ["Master Code", "SHOWALL"]
 ];
 
