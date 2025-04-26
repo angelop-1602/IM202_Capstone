@@ -14,10 +14,26 @@
 </head>
 
 <body>
+    <!-- Add a button to trigger the modal -->
+    
+    
+    <!-- Modal container -->
+    <div id="update-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>Important Update from the REC Chair</h2>
+            <p>Please ensure that, once you have completed the First, Second, Third, and Fourth Releases, you open the link below and mark the releases that have been finished. This will serve as the baseline to determine which releases should be deleted from the system. Thank you for your attention to this matter.</p>  
+            <a href="https://spup-my.sharepoint.com/:x:/g/personal/rec_spup_edu_ph/EYlvUsO5eUdOh7Jaq-T9B5YB5QEQCBlnT5oScP_7AF_eWw?e=Jv7g12" class="checklist-button" target="_blank">Checklist of Finished Releases</a>
+        </div>
+    </div>
+    
     <main class="container">
         
         <header class="header">
+            
             <h1>e-REC System</h1>
+            
+            <button id="update-button" class="update-button">&#128276; Important Notice</button>
             <nav class="form-buttons">
                 <button class="form-button" onclick="openForm('https://forms.office.com/r/0nQCTjvBsv')">ICA
                     Form</button>
@@ -47,8 +63,8 @@
                 <select id="week-select" class="dropdown" style="display: none;">
                     <option value="1st-week">1st Week</option>
                     <option value="2nd-week">2nd Week</option>
-                    <option value="3rd-week" disabled>3rd Week (Coming Soon)</option>
-                    <option value="4th-week" disabled>4th Week (Coming Soon)</option>
+                    <option value="3rd-week">3rd Week</option>
+                    <option value="4th-week">4th Week</option>
                 </select>
             </div>
         </header>

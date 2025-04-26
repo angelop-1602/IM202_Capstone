@@ -379,3 +379,46 @@ window.addEventListener('DOMContentLoaded', function() {
     // Load initial data
     loadCSV();
 });
+
+// Modal functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('update-modal');
+    const updateBtn = document.getElementById('update-button');
+    const closeBtn = document.querySelector('.close-modal');
+
+    // Function to open modal with animation
+    function openModal() {
+        modal.style.display = 'block';
+        // Trigger reflow to allow the transition to work
+        void modal.offsetWidth;
+        modal.classList.add('show');
+    }
+
+    // Function to close modal with animation
+    function closeModal() {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300); // Match the transition duration
+    }
+
+    // Open modal when button is clicked
+    updateBtn.addEventListener('click', openModal);
+
+    // Close modal when X is clicked
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Also close modal when pressing ESC key
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && modal.classList.contains('show')) {
+            closeModal();
+        }
+    });
+});
