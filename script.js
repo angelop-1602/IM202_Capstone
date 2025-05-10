@@ -79,7 +79,16 @@ function loadCSV() {
         } else if (week === '4th-week') {
             csvFile = 'april_4thweek.csv';
         }
-
+    } else if (release === 'may') {
+        if (week === '1st-week') {
+            csvFile = 'may_1stweek.csv';
+        } else if (week === '2nd-week') {
+            csvFile = 'may_2ndweek.csv';
+        } else if (week === '3rd-week') {
+            csvFile = 'may_3rdweek.csv';
+        } else if (week === '4th-week') {
+            csvFile = 'may_4thweek.csv';
+        }
     }
 
     // Update UI dropdowns display
@@ -87,7 +96,7 @@ function loadCSV() {
         (release === 'second-release' || release === 'third-release' || release === 'fourth-release') ? 'block' : 'none';
     
     document.getElementById('week-select').style.display = 
-        (release === 'april') ? 'block' : 'none';
+        (release === 'april' || release === 'may') ? 'block' : 'none';
 
     // Only proceed if we have a valid CSV file
     if (!csvFile) {
@@ -173,19 +182,7 @@ document.getElementById('level-select').addEventListener('change', loadCSV);
 document.getElementById('week-select').addEventListener('change', loadCSV);
 document.getElementById('reviewer-code').addEventListener('input', debouncedLoadCSV);
 
-// Add the April option to the release dropdown
-const releaseSelect = document.getElementById('release-select');
-// Remove the april-1stweek option if it exists
-const oldAprilOption = releaseSelect.querySelector('option[value="april-1stweek"]');
-if (oldAprilOption) {
-    releaseSelect.removeChild(oldAprilOption);
-}
-// Add the new April option
-const newAprilOption = document.createElement('option');
-newAprilOption.value = 'april';
-newAprilOption.textContent = 'April';
-releaseSelect.appendChild(newAprilOption);
-
+// Remove the duplicate April option code
 // Create the week dropdown if it doesn't exist
 if (!document.getElementById('week-select')) {
     const weekSelect = document.createElement('select');
@@ -196,9 +193,9 @@ if (!document.getElementById('week-select')) {
     // Week options
     const weekOptions = [
         { value: '1st-week', text: '1st Week' },
-        { value: '2nd-week', text: '2nd Week' },
-        { value: '3rd-week', text: '3rd Week (Coming Soon)', disabled: true },
-        { value: '4th-week', text: '4th Week (Coming Soon)', disabled: true }
+        { value: '2nd-week', text: '2nd Week', disabled: false },
+        { value: '3rd-week', text: '3rd Week', disabled: false },
+        { value: '4th-week', text: '4th Week', disabled: false }
     ];
     
     // Add options to the week dropdown
@@ -215,6 +212,47 @@ if (!document.getElementById('week-select')) {
     // Insert the week dropdown into the dropdown container
     document.querySelector('.dropdown-container').appendChild(weekSelect);
 }
+
+// Function to update week options based on selected release
+function updateWeekOptions() {
+    const release = document.getElementById('release-select').value;
+    const weekSelect = document.getElementById('week-select');
+    
+    if (!weekSelect) return;
+    
+    // Get all week options
+    const options = weekSelect.querySelectorAll('option');
+    
+    // Enable/disable options based on release
+    if (release === 'may') {
+        // For May, only 1st week is available
+        options.forEach((option, index) => {
+            if (index > 0) { // Skip first option (1st week)
+                option.disabled = true;
+                option.textContent = option.value === '2nd-week' ? '2nd Week (Coming Soon)' : 
+                                     option.value === '3rd-week' ? '3rd Week (Coming Soon)' : 
+                                     '4th Week (Coming Soon)';
+            } else {
+                option.disabled = false;
+                option.textContent = '1st Week';
+            }
+        });
+        // Set selection to 1st week
+        weekSelect.value = '1st-week';
+    } else if (release === 'april') {
+        // For April, all weeks are available
+        options.forEach((option, index) => {
+            option.disabled = false;
+            option.textContent = option.value === '1st-week' ? '1st Week' : 
+                                option.value === '2nd-week' ? '2nd Week' : 
+                                option.value === '3rd-week' ? '3rd Week' : 
+                                '4th Week';
+        });
+    }
+}
+
+// Add event listener to update week options when release changes
+document.getElementById('release-select').addEventListener('change', updateWeekOptions);
 
 // Optimized function to display results
 function displayResults(data) {
@@ -375,6 +413,9 @@ window.addEventListener('DOMContentLoaded', function() {
     
     // Add clear code button
     addClearCodeButton();
+    
+    // Update week options based on initial release
+    updateWeekOptions();
     
     // Load initial data
     loadCSV();
