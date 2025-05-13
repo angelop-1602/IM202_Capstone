@@ -79,16 +79,6 @@ function loadCSV() {
         } else if (week === '4th-week') {
             csvFile = 'april_4thweek.csv';
         }
-    } else if (release === 'may') {
-        if (week === '1st-week') {
-            csvFile = 'may_1stweek.csv';
-        } else if (week === '2nd-week') {
-            csvFile = 'may_2ndweek.csv';
-        } else if (week === '3rd-week') {
-            csvFile = 'may_3rdweek.csv';
-        } else if (week === '4th-week') {
-            csvFile = 'may_4thweek.csv';
-        }
     }
 
     // Update UI dropdowns display
@@ -96,7 +86,7 @@ function loadCSV() {
         (release === 'second-release' || release === 'third-release' || release === 'fourth-release') ? 'block' : 'none';
     
     document.getElementById('week-select').style.display = 
-        (release === 'april' || release === 'may') ? 'block' : 'none';
+        (release === 'april') ? 'block' : 'none';
 
     // Only proceed if we have a valid CSV file
     if (!csvFile) {
@@ -224,22 +214,7 @@ function updateWeekOptions() {
     const options = weekSelect.querySelectorAll('option');
     
     // Enable/disable options based on release
-    if (release === 'may') {
-        // For May, only 1st week is available
-        options.forEach((option, index) => {
-            if (index > 0) { // Skip first option (1st week)
-                option.disabled = true;
-                option.textContent = option.value === '2nd-week' ? '2nd Week (Coming Soon)' : 
-                                     option.value === '3rd-week' ? '3rd Week (Coming Soon)' : 
-                                     '4th Week (Coming Soon)';
-            } else {
-                option.disabled = false;
-                option.textContent = '1st Week';
-            }
-        });
-        // Set selection to 1st week
-        weekSelect.value = '1st-week';
-    } else if (release === 'april') {
+    if (release === 'april') {
         // For April, all weeks are available
         options.forEach((option, index) => {
             option.disabled = false;

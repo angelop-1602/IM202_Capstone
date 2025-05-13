@@ -22,8 +22,26 @@
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <h2>Important Update from the REC Chair</h2>
-            <p>Please ensure that, once you have completed the First, Second, Third, and Fourth Releases, you open the link below and mark the releases that have been finished. This will serve as the baseline to determine which releases should be deleted from the system. Thank you for your attention to this matter.</p>  
+            <div class="alert-box">
+                <h3>⚠️ Important Notice #2</h3>
+                <h5>System Migration Notice</h5>
+                <p>Dear Reviewers,</p>
+                <p>Please be informed that all <b>May releases and future protocol reviews</b> will be processed through our new e-REC Review System at:</p>
+                <a href="https://e-rec-review.vercel.app/" class="checklist-button" target="_blank">New e-REC Review System</a>
+                <p>This migration is part of our efforts to enhance the review process and provide a more streamlined experience.</p>
+                <p>Key Points:</p>
+                <ul>
+                    <li>Current system will continue to handle existing releases (1st to 4th Release and April)</li>
+                    <li>All May releases and future protocols will be exclusively available on the new system</li>
+                    <li>Your reviewer code remains the same on the new system</li>
+                </ul>
+                <p>Thank you for your cooperation during this transition.</p>
+            </div>
+            <div class="alert-box">
+                <h3>⚠️ Important Notice #1</h3>
+                <p>Please ensure that, once you have completed the First, Second, Third, and Fourth Releases, you open the link below and mark the releases that have been finished. This will serve as the baseline to determine which releases should be deleted from the system. Thank you for your attention to this matter.</p>  
             <a href="https://spup-my.sharepoint.com/:x:/g/personal/rec_spup_edu_ph/EYlvUsO5eUdOh7Jaq-T9B5YB5QEQCBlnT5oScP_7AF_eWw?e=Jv7g12" class="checklist-button" target="_blank">Checklist of Finished Releases</a>
+            </div>
         </div>
     </div>
     
@@ -33,7 +51,7 @@
             
             <h1>e-REC System</h1>
             
-            <button id="update-button" class="update-button">&#128276; Important Notice</button>
+            <button id="update-button" class="update-button">⚠️ Important Notice</button>
             <nav class="form-buttons">
                 <button class="form-button" onclick="openForm('https://forms.office.com/r/0nQCTjvBsv')">ICA
                     Form</button>
@@ -54,7 +72,6 @@
                     <option value="third-release">Third Release</option>
                     <option value="fourth-release">Fourth Release</option>
                     <option value="april">April</option>
-                    <option value="may">May</option>
                 </select>
                 <label for="level-select" class="sr-only">Level</label>
                 <select id="level-select" class="dropdown" style="display: none;">

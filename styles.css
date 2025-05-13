@@ -493,20 +493,60 @@ input[type="text"]:focus {
     display: block;
     margin: 0 auto 1.5rem auto;
     padding: 0.75rem 1.5rem;
-    color: black;
+    color: #000;
+    background-color: #ffc107;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: attention-pulse 2s infinite;
+}
+
+/* Animation for the button */
+@keyframes attention-pulse {
+    0% { transform: scale(1); }
+    5% { transform: scale(1.05); }
+    10% { transform: scale(1); }
+    15% { transform: scale(1.05); }
+    20% { transform: scale(1); }
+    100% { transform: scale(1); }
 }
 
 .update-button:hover {
-    background-color: #b89300;
+    background-color: #e0a800;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: #333;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    color: #000;
+    animation: none;
+}
+
+/* Add a shining effect */
+.update-button::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to right, 
+        rgba(255, 255, 255, 0) 0%, 
+        rgba(255, 255, 255, 0.3) 50%, 
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%) rotate(30deg); }
+    20% { transform: translateX(100%) rotate(30deg); }
+    100% { transform: translateX(100%) rotate(30deg); }
 }
 
 /* Modal styles */
@@ -519,9 +559,10 @@ input[type="text"]:focus {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.6);
     opacity: 0;
     transition: opacity 0.3s ease;
+    backdrop-filter: blur(3px);
 }
 
 .modal.show {
@@ -531,14 +572,15 @@ input[type="text"]:focus {
 
 .modal-content {
     background-color: #fefefe;
-    margin: 10% auto;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    max-width: 600px;
     position: relative;
-    transform: translateY(-20px);
-    transition: transform 0.3s ease;
+    transform: translateY(-30px);
+    transition: transform 0.4s ease;
+    border-top: 6px solid #ffc107;
 }
 
 .modal.show .modal-content {
@@ -547,25 +589,123 @@ input[type="text"]:focus {
 
 .close-modal {
     position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
+    top: 15px;
+    right: 20px;
+    font-size: 30px;
     font-weight: bold;
     color: #666;
     cursor: pointer;
     transition: color 0.2s;
+    z-index: 10;
 }
 
 .close-modal:hover {
-    color: #000;
+    color: #dc3545;
 }
 
 .modal h2 {
+    color: #333;
     margin-top: 0;
-    color: #016634;
-    border-bottom: 2px solid #f1f1f1;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 1.75rem;
+    text-align: center;
+    font-size: 1.6rem;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.modal h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #ffc107;
+    border-radius: 3px;
+}
+
+.alert-box {
+    background-color: #fff8e6;
+    border-left: 6px solid #ffc107;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.alert-box::before {
+    content: "⚠️";
+    position: absolute;
+    right: -15px;
+    top: -20px;
+    font-size: 5rem;
+    opacity: 0.1;
+    transform: rotate(15deg);
+}
+
+.alert-box h3 {
+    color: #dc3545;
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+}
+
+.alert-box h5 {
+    color: #333;
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.alert-box p {
+    margin: 0.75rem 0;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+/* Add different colors for different alert numbers */
+.alert-box:nth-of-type(1) {
+    border-left-color: #dc3545;
+    background-color: #fff5f5;
+}
+
+.alert-box:nth-of-type(2) {
+    border-left-color: #fd7e14;
+    background-color: #fff9f0;
+}
+
+.alert-box:nth-of-type(3) {
+    border-left-color: #ffc107;
+    background-color: #fffbea;
+}
+
+/* Animation for alerts */
+@keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.alert-box {
+    animation: pulse-border 2s infinite;
+}
+
+.alert-box:nth-of-type(1) {
+    animation-delay: 0s;
+}
+
+.alert-box:nth-of-type(2) {
+    animation-delay: 0.7s;
+}
+
+.alert-box:nth-of-type(3) {
+    animation-delay: 1.4s;
 }
 
 .checklist-button {
